@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE games_objects SYSTEM "games.dtd">
+
+<games_objects>
+    <developer type="riot">
+        <games>
+            <game>Teamfight tactiks</game>
+            <playerbase>Teamfight tacktiks har sätt upp till 128 miljoner spelare i månaden och 10 miljoner dagligen</playerbase>
+            <url>https://en.wikipedia.org/wiki/Teamfight_Tactics</url>
+        </games>  
+    </developer>
+
+    <developer type="fromsoftware">
+        <games>
+          <game>Elden ring</game>
+            <playerbase>Elden ring är inte ute än och därför finns det ingen information om antal spelare.</playerbase>
+            <url>https://en.wikipedia.org/wiki/Elden_Ring</url>
+        </games>  
+    </developer>
+</games_objects>

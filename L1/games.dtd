@@ -1,0 +1,20 @@
+<!-- 
+gamesobjekt
+   developers riot eller fromsoftware
+      games
+	    game
+		playerbase
+	description   
+
+          
+-->   
+
+<!ELEMENT games_objects (developer+)>
+	<!ELEMENT developer (games, description*)>
+			<!ATTLIST developer type (riot|fromsoftware) #REQUIRED>
+		<!ELEMENT games (game, playerbase, url)>
+			<!ELEMENT game (#PCDATA)>
+			<!ELEMENT playerbase (#PCDATA)>
+			<!ELEMENT url (#PCDATA)>
+		<!ELEMENT description (#PCDATA)>
+	
