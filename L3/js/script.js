@@ -37,15 +37,11 @@ function addCourse() {
 	let links = this.innerHTML;
 	let courses = document.querySelectorAll(" #courseList p");
 
-
 	for (i = 0; i < courses.length; i++) {
 		if (links == courses[i].innerHTML) {
 			return;
 		}
-
-
 	}
-
 	let newElem = document.createElement("p");
 	let newText = document.createTextNode(links);
 	let p = courseListElem.querySelector("p");
@@ -53,10 +49,6 @@ function addCourse() {
 	courseListElem.insertBefore(newElem, p);
 	newElem.addEventListener("click", removeCourse);
 	newElem.style.cursor = "pointer";
-
-
-
-
 } // End addCourse
 
 // Den kurs användaren klickat på i kurslistan, tas bort.

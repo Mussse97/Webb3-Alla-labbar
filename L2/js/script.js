@@ -72,23 +72,21 @@ function requestData2(courses) {
 	}
 }
 // först i funktionen hämtar vi ut subject och då går jag igenom courseList eftersom subject är dotter element till courselist
+// När jag refererar till title, code osv från courselist så får jag bara fram ett av de flera elementen som finns. Därför tar jag det från course då dom är dotter element till course.
 function getData2(XMLcode) {
-	let courseElem = XMLcode.getElementsByTagName("courselist");
-	let HTMLcode = "";
-	for (let i = 0; i < courseElem.length; i++) {
 
-		let subjectTag = XMLcode.getElementsByTagName("subject")[0]; // Hämtar text från subject.
-		HTMLcode += "<h3>" + subjectTag.firstChild.data + "</h3>"; // skriver ut i h3.
-	}
-	// När jag refererar till title, code osv från courselist så får jag bara fram ett av de flera elementen som finns. Därför tar jag det från course då dom är dotter element till course.
-	let courseElemm = XMLcode.getElementsByTagName("course");
-	for (let i = 0; i < courseElemm.length; i++) {
-		let titleElemm = courseElemm[i].getElementsByTagName("title")[0];
-		let codeElem = courseElemm[i].getElementsByTagName("code")[0];
-		let creditElem = courseElemm[i].getElementsByTagName("credits")[0];
+	let HTMLcode = "";
+	let subjectTag = XMLcode.getElementsByTagName("subject")[0]; // Hämtar text från subject.
+	HTMLcode += "<h3>" + subjectTag.firstChild.data + "</h3>"; // skriver ut i h3.
+
+	let courseElem = XMLcode.getElementsByTagName("course");
+	for (let i = 0; i < courseElem.length; i++) {
+		let titleElem = courseElem[i].getElementsByTagName("title")[0];
+		let codeElem = courseElem[i].getElementsByTagName("code")[0];
+		let creditElem = courseElem[i].getElementsByTagName("credits")[0];
 
 		HTMLcode += "<span>" + codeElem.firstChild.data + "</span>" + ", ";
-		HTMLcode += "<span>" + titleElemm.firstChild.data + "</span>" + ", ";
+		HTMLcode += "<span>" + titleElem.firstChild.data + "</span>" + ", ";
 		HTMLcode += "<span>" + creditElem.firstChild.data + "</span>" + "hp" + " <hr> ";
 
 	}
