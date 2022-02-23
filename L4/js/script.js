@@ -1,21 +1,10 @@
 // Globala variabler
-var titleElem;		// Referens till element för bildspelets titel
-var imgElem;		// Referens till img-element för bildspelet
-var captionElem;	// Referens till element för bildtext
-var imgUrls;		// Array med url:er för valda bilder
-var imgCaptions;	// Array med bildtexter till valda bilder
-var imgIx;			// Index för aktuell bild
-var timer;			// Referens till timern för bildspelet
+
 
 // Initiering av globala variabler och händelsehanterare
 function init() {
+ let viewer = new ImageViewer("imgviewer");
 	
-	imgElem = document.querySelector("#imgViewer img");
-	captionElem = document.querySelector("#imgViewer p");
-	imgUrls = ["img/blank.png"]; // Initiera med den tomma bilden
-	imgCaptions = [""]; // Tom bildtext för den tomma bilden
-	imgIx = 0;
-	timer = null;
 	document.querySelector("#categoryMenu").addEventListener("change",
 			function() {
 				requestImages("xml/images" + this.selectedIndex + ".xml");
@@ -50,13 +39,16 @@ function ImageViewer(titleElem, imgElem, captionElem, imgUrls, imgCaptions, imgI
 	this.imgCaptions = imgCaptions;
 	this.imgIx = imgIx;
 	this.timer = timer;
+
+	imgElem = document.querySelector("#imgViewer img");
+	captionElem = document.querySelector("#imgViewer p");
+	imgUrls = ["img/blank.png"]; // Initiera med den tomma bilden
+	imgCaptions = [""]; // Tom bildtext för den tomma bilden
+	imgIx = 0;
+	timer = null;
 }
 
-let imageViewer = new ImageViewer("imgViewer");
-
-
-// Gör ett Ajax-anrop för att läsa in begärd fil
-function requestImages(file) { // Parametern nr används i url:en för den fil som ska läsas in
+ImageViewer.prototype.requestImages = function(file){
 	let request = new XMLHttpRequest(); // Object för Ajax-anropet
 	request.open("GET",file,true);
 	request.send(null); // Skicka begäran till servern
@@ -64,11 +56,9 @@ function requestImages(file) { // Parametern nr används i url:en för den fil s
 		if (request.readyState == 4) // readyState 4 --> kommunikationen är klar
 			if (request.status == 200) getImages(request.responseXML); // status 200 (OK) --> filen fanns
 			else document.getElementById("result").innerHTML = "Den begärda resursen fanns inte.";
-	};
-} // End requestImages
+}
 
-// Funktion för att tolka XML-koden och lägga in innehållet i variablerna för bilderna i bildspelet
-function getImages(XMLcode) { // Parametern XMLcode är hela den inlästa XML-koden
+ImageViewer.prototype.getImages = function(XMLcode){
 	titleElem.innerHTML = XMLcode.getElementsByTagName("category")[0].firstChild.data;
 	let urlElems = XMLcode.getElementsByTagName("url"); // Alla url-element
 	let captionElems = XMLcode.getElementsByTagName("caption"); // Alla caption-element
@@ -80,10 +70,53 @@ function getImages(XMLcode) { // Parametern XMLcode är hela den inlästa XML-ko
 	}
 	imgIx = 0;
 	showImage(); // Visa första bilden
-} // End getImages
+}
+ImageViewer.prototype.showImage = function(){
+	imgElem.src = imgUrls[imgIx];
+	captionElem.innerHTML = (imgIx+1) + ". " + imgCaptions[imgIx];
+}
+
+ImageViewer.prototype.prevImage = function(){
+	if (imgIx > 0) imgIx--;
+	else imgIx = imgUrls.length - 1; // Gå runt till sista bilden
+	showImage();
+}
+
+ImageViewer.prototype.nextImage = function(){
+	if (imgIx < imgUrls.length - 1) imgIx++;
+	else imgIx = 0; // Gå runt till första bilden
+	showImage();
+}
+
+// Gör ett Ajax-anrop för att läsa in begärd fil
+/*function requestImages(file) { // Parametern nr används i url:en för den fil som ska läsas in
+	let request = new XMLHttpRequest(); // Object för Ajax-anropet
+	request.open("GET",file,true);
+	request.send(null); // Skicka begäran till servern
+	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
+		if (request.readyState == 4) // readyState 4 --> kommunikationen är klar
+			if (request.status == 200) getImages(request.responseXML); // status 200 (OK) --> filen fanns
+			else document.getElementById("result").innerHTML = "Den begärda resursen fanns inte.";
+	};
+} // End requestImages*/
+
+// Funktion för att tolka XML-koden och lägga in innehållet i variablerna för bilderna i bildspelet
+/*function getImages(XMLcode) { // Parametern XMLcode är hela den inlästa XML-koden
+	titleElem.innerHTML = XMLcode.getElementsByTagName("category")[0].firstChild.data;
+	let urlElems = XMLcode.getElementsByTagName("url"); // Alla url-element
+	let captionElems = XMLcode.getElementsByTagName("caption"); // Alla caption-element
+	imgUrls = [];		// Nya tomma arrayer för bilder
+	imgCaptions = [];	// och bildtexter
+	for (let i = 0; i < urlElems.length; i++) {
+		imgUrls.push(urlElems[i].firstChild.data);
+		imgCaptions.push(captionElems[i].firstChild.data);
+	}
+	imgIx = 0;
+	showImage(); // Visa första bilden
+} // End getImages*/
 
 // Visa bilden med index imgIx
-function showImage() {
+/*function showImage() {
 	imgElem.src = imgUrls[imgIx];
 	captionElem.innerHTML = (imgIx+1) + ". " + imgCaptions[imgIx];
 } // End showImage
@@ -115,5 +148,5 @@ function autoImage(e,interval) {
 		timer = null;
 		if (e) e.currentTarget.style.backgroundColor = "white";
 	}
-} // End autoImage
-*/
+} // End autoImage*/
+}
