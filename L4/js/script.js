@@ -7,12 +7,16 @@ function init() {
 	
 	document.querySelector("#categoryMenu").addEventListener("change",
 			function() {
-				requestImages("xml/images" + this.selectedIndex + ".xml");
+				ImageViewer.requestImages("xml/images" + this.selectedIndex + ".xml");
 				this.selectedIndex = 0;
 			}
 		);
-	document.querySelector("#prevBtn").addEventListener("click",prevImage);
-	document.querySelector("#nextBtn").addEventListener("click",nextImage);
+	document.querySelector("#prevBtn").addEventListener("click",function(){
+		ImageViewer.prevImage();
+	});
+	document.querySelector("#nextBtn").addEventListener("click",function(){
+		ImageViewer.nextImage();
+	});
 	
 	// ----- Extramerit -----
 	/* document.querySelector("#autoBtn").addEventListener("click",
@@ -65,26 +69,26 @@ ImageViewer.getImages = function(XMLcode){
 	imgUrls = [];		// Nya tomma arrayer för bilder
 	imgCaptions = [];	// och bildtexter
 	for (let i = 0; i < urlElems.length; i++) {
-		imgUrls.push(urlElems[i].firstChild.data);
-		imgCaptions.push(captionElems[i].firstChild.data);
+		this.imgUrls.push(urlElems[i].firstChild.data);
+		this.imgCaptions.push(captionElems[i].firstChild.data);
 	}
 	imgIx = 0;
 	showImage(); // Visa första bilden
 }
 ImageViewer.showImage = function(){
 	imgElem.src = imgUrls[imgIx];
-	captionElem.innerHTML = (imgIx+1) + ". " + imgCaptions[imgIx];
+	this.captionElem.innerHTML = (imgIx+1) + ". " + imgCaptions[imgIx];
 }
 
 ImageViewer.prevImage = function(){
 	if (imgIx > 0) imgIx--;
-	else imgIx = imgUrls.length - 1; // Gå runt till sista bilden
+	else this.imgIx = this.imgUrls.length - 1; // Gå runt till sista bilden
 	showImage();
 }
 
 ImageViewer.nextImage = function(){
-	if (imgIx < imgUrls.length - 1) imgIx++;
-	else imgIx = 0; // Gå runt till första bilden
+	if (this.imgIx < this.imgUrls.length - 1) this.imgIx++;
+	else this.imgIx = 0; // Gå runt till första bilden
 	showImage();
 }
 
