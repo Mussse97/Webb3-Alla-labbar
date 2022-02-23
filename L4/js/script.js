@@ -48,7 +48,7 @@ function ImageViewer(titleElem, imgElem, captionElem, imgUrls, imgCaptions, imgI
 	timer = null;
 }
 
-ImageViewer.prototype.requestImages = function(file){
+ImageViewer.requestImages = function(file){
 	let request = new XMLHttpRequest(); // Object för Ajax-anropet
 	request.open("GET",file,true);
 	request.send(null); // Skicka begäran till servern
@@ -58,7 +58,7 @@ ImageViewer.prototype.requestImages = function(file){
 			else document.getElementById("result").innerHTML = "Den begärda resursen fanns inte.";
 }
 
-ImageViewer.prototype.getImages = function(XMLcode){
+ImageViewer.getImages = function(XMLcode){
 	titleElem.innerHTML = XMLcode.getElementsByTagName("category")[0].firstChild.data;
 	let urlElems = XMLcode.getElementsByTagName("url"); // Alla url-element
 	let captionElems = XMLcode.getElementsByTagName("caption"); // Alla caption-element
@@ -71,18 +71,18 @@ ImageViewer.prototype.getImages = function(XMLcode){
 	imgIx = 0;
 	showImage(); // Visa första bilden
 }
-ImageViewer.prototype.showImage = function(){
+ImageViewer.showImage = function(){
 	imgElem.src = imgUrls[imgIx];
 	captionElem.innerHTML = (imgIx+1) + ". " + imgCaptions[imgIx];
 }
 
-ImageViewer.prototype.prevImage = function(){
+ImageViewer.prevImage = function(){
 	if (imgIx > 0) imgIx--;
 	else imgIx = imgUrls.length - 1; // Gå runt till sista bilden
 	showImage();
 }
 
-ImageViewer.prototype.nextImage = function(){
+ImageViewer.nextImage = function(){
 	if (imgIx < imgUrls.length - 1) imgIx++;
 	else imgIx = 0; // Gå runt till första bilden
 	showImage();
