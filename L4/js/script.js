@@ -63,7 +63,7 @@ ImageViewer.requestImages = function(file){
 }
 
 ImageViewer.getImages = function(XMLcode){
-	titleElem.innerHTML = XMLcode.getElementsByTagName("category")[0].firstChild.data;
+	this.titleElem.innerHTML = XMLcode.getElementsByTagName("category")[0].firstChild.data;
 	let urlElems = XMLcode.getElementsByTagName("url"); // Alla url-element
 	let captionElems = XMLcode.getElementsByTagName("caption"); // Alla caption-element
 	imgUrls = [];		// Nya tomma arrayer för bilder

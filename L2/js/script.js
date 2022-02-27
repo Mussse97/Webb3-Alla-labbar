@@ -74,7 +74,6 @@ function requestData2(courses) {
 // först i funktionen hämtar vi ut subject och då går jag igenom courseList eftersom subject är dotter element till courselist
 // När jag refererar till title, code osv från courselist så får jag bara fram ett av de flera elementen som finns. Därför tar jag det från course då dom är dotter element till course.
 function getData2(XMLcode) {
-
 	let HTMLcode = "";
 	let subjectTag = XMLcode.getElementsByTagName("subject")[0]; // Hämtar text från subject.
 	HTMLcode += "<h3>" + subjectTag.firstChild.data + "</h3>"; // skriver ut i h3.
