@@ -3,7 +3,7 @@
 
 // Initiering av globala variabler och händelsehanterare
 function init() {
- let viewer = new ImageViewer("imgviewer");
+ let viewer = new ImageViewer("imgViewer");
 	
 	document.querySelector("#categoryMenu").addEventListener("change",
 			function() {
@@ -35,21 +35,14 @@ window.addEventListener("load",init);
 // ---------------------------------------------------------------
 // ----- Funktioner för bildspelet -----
 
-function ImageViewer(titleElem, imgElem, captionElem, imgUrls, imgCaptions, imgIx, timer){
-	this.titleElem = titleElem;
-	this.imgElem = imgElem;
-	this.captionElem = captionElem;
-	this.imgUrls = imgUrls;
-	this.imgCaptions = imgCaptions;
-	this.imgIx = imgIx;
-	this.timer = timer;
+function ImageViewer(){
 
-	imgElem = document.querySelector("#imgViewer img");
-	captionElem = document.querySelector("#imgViewer p");
-	imgUrls = ["img/blank.png"]; // Initiera med den tomma bilden
-	imgCaptions = [""]; // Tom bildtext för den tomma bilden
-	imgIx = 0;
-	timer = null;
+	this.imgElem = document.querySelector("#imgViewer img");
+	this.captionElem = document.querySelector("#imgViewer p");
+	this.imgUrls = ["img/blank.png"]; // Initiera med den tomma bilden
+	this.imgCaptions = [""]; // Tom bildtext för den tomma bilden
+	this.imgIx = 0;
+	this.timer = null;
 }
 
 ImageViewer.requestImages = function(file){
@@ -58,7 +51,7 @@ ImageViewer.requestImages = function(file){
 	request.send(null); // Skicka begäran till servern
 	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
 		if (request.readyState == 4) // readyState 4 --> kommunikationen är klar
-			if (request.status == 200) getImages(request.responseXML); // status 200 (OK) --> filen fanns
+			if (request.status == 200)getImages(request.responseXML); // status 200 (OK) --> filen fanns
 			else document.getElementById("result").innerHTML = "Den begärda resursen fanns inte.";
 }
 
@@ -66,17 +59,17 @@ ImageViewer.getImages = function(XMLcode){
 	this.titleElem.innerHTML = XMLcode.getElementsByTagName("category")[0].firstChild.data;
 	let urlElems = XMLcode.getElementsByTagName("url"); // Alla url-element
 	let captionElems = XMLcode.getElementsByTagName("caption"); // Alla caption-element
-	imgUrls = [];		// Nya tomma arrayer för bilder
-	imgCaptions = [];	// och bildtexter
+	this.imgUrls = [];		// Nya tomma arrayer för bilder
+	this.imgCaptions = [];	// och bildtexter
 	for (let i = 0; i < urlElems.length; i++) {
 		this.imgUrls.push(urlElems[i].firstChild.data);
 		this.imgCaptions.push(captionElems[i].firstChild.data);
 	}
-	imgIx = 0;
+	this.imgIx = 0;
 	showImage(); // Visa första bilden
 }
 ImageViewer.showImage = function(){
-	imgElem.src = imgUrls[imgIx];
+	this.imgElem.src = imgUrls[imgIx];
 	this.captionElem.innerHTML = (imgIx+1) + ". " + imgCaptions[imgIx];
 }
 
