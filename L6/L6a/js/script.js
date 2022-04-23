@@ -42,7 +42,7 @@ function requestNewImgs() {
 	flickrImgElem.innerHTML = "<img src='img/progress.gif' style='border:none;'>";
 	pageNrElem.innerHTML = pageNr;
 	let request = new XMLHttpRequest(); // Object för Ajax-anropet
-	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + myApiKey + "&method=flickr.photos.search&tags=&has_geo=1" + tags + "&per_page=5&page=" + pageNr + "&format=json&nojsoncallback=1",true);
+	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + myApiKey + "&method=flickr.photos.search&tags=" + tags + "&per_page=5&page=" + pageNr + "&has_geo=1" + "&format=json&nojsoncallback=1",true);
 	request.send(null); // Skicka begäran till servern
 	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
 		if (request.readyState == 4)
@@ -96,28 +96,46 @@ function enlargeImg() {
 
 // Ajax-begäran av plats för bilden
 function requestLocation(id) {
-	Locrespons= Json.parse(reponse);
-	if (response.stat !="ok"){
-		return;
-	}
-	for (let i=0; i < response.photos.geo.getLocation; i++){
-		
+	let request = new XMLHttpRequest(); // Ajax anrop
+	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + myApiKey + "&method=flickr.geo.getLocation" + "&photo_id=" + id + "&format=json&nojsoncallback=1", true);
+	request.send(null); // begäran till server
+	request.onreadystatechange = function(){ // avläser status
+		if (request.readystate == 4)
+		if(request.status == 200)showLocation(JSON.parse(request.responseText));
+		else alert("nope");
 	}
 } // End requestLocation
 
 // Visa koordinater
 function showLocation(response) {
-	
+	let locations = response.photo.location; // bildens position
+	imgLocationElem.textContent = "latitud:" + locations.latitude + ", longitud:" + locations.longitude;
+	requestImgsByLocation(locations.latitude , locations.longitude);
 } // End showLocation
 
 // Ajax-begäran av nya bilder
 function requestImgsByLocation(lat,lon) {
-	
+	let request = new XMLHttpRequest();
+	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + myApiKey + "&method=flickr.photos.search&lat=" + lat + "&lon=" + lon + "&per_page=5&format=json&nojsoncallback=1", true );
+	request.send(null); // begäran till server
+	request.onreadystatechange = function(){ // avläser status
+		if (request.readystate == 4)
+		if(request.status == 200)showMoreImgs(JSON.parse(request.responseText));
+		else flickrImgElem.innerHTML = "Den begärda resursen finns inte.";
+	}
 } // End requestImgsByLocation
 
 // Tolka svaret och visa upp bilderna.
 function showMoreImgs(response) {
-	
+	moreImgElem.innerHTML="";
+	for (let i=0; i < response.photos.photo.length; i++){
+		let photo = response.photos.photo[i]; // foto i svaret
+		let photoUrl = "https://live.staticflicker.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_s.jpg"; //Adress till bild
+		let newElem = document.createElement("img"); //nytt img element
+		newElem.setAttribute("src", photoUrl);
+		newElem.setAttribute("data-photo", JSON.stringify(photo));
+		moreImgElem.appendChild(newElem);
+	}
 } // End showMoreImgs
 
 // ---------- Karta från Google Maps ---------- Extramerit
