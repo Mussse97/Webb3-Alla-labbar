@@ -97,10 +97,10 @@ function enlargeImg() {
 // Ajax-begäran av plats för bilden
 function requestLocation(id) {
 	let request = new XMLHttpRequest(); // Ajax anrop
-	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + myApiKey + "&method=flickr.geo.getLocation" + "&photo_id=" + id + "&format=json&nojsoncallback=1", true);
+	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + myApiKey + "&method=flickr.photos.geo.getLocation&tags=" + tags + "&per_page=5&page=" + pageNr + "&has_geo=1&photo_id=" + id + "&format=json&nojsoncallback=1",true);
 	request.send(null); // begäran till server
 	request.onreadystatechange = function(){ // avläser status
-		if (request.readystate == 4)
+		if (request.readyState == 4)
 		if(request.status == 200)showLocation(JSON.parse(request.responseText));
 		else alert("nope");
 	}
@@ -119,7 +119,7 @@ function requestImgsByLocation(lat,lon) {
 	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + myApiKey + "&method=flickr.photos.search&lat=" + lat + "&lon=" + lon + "&per_page=5&format=json&nojsoncallback=1", true );
 	request.send(null); // begäran till server
 	request.onreadystatechange = function(){ // avläser status
-		if (request.readystate == 4)
+		if (request.readyState == 4)
 		if(request.status == 200)showMoreImgs(JSON.parse(request.responseText));
 		else flickrImgElem.innerHTML = "Den begärda resursen finns inte.";
 	}
@@ -130,7 +130,7 @@ function showMoreImgs(response) {
 	moreImgElem.innerHTML="";
 	for (let i=0; i < response.photos.photo.length; i++){
 		let photo = response.photos.photo[i]; // foto i svaret
-		let photoUrl = "https://live.staticflicker.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_s.jpg"; //Adress till bild
+		let photoUrl = "https://live.staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_s.jpg"; //Adress till bild
 		let newElem = document.createElement("img"); //nytt img element
 		newElem.setAttribute("src", photoUrl);
 		newElem.setAttribute("data-photo", JSON.stringify(photo));
