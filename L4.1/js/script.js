@@ -1,11 +1,11 @@
 
 // Initiering av globala variabler och händelsehanterare
 function init() {
-let viewer = new ImageViewer("#imgViewer");
+let Imageviewer = new ImageViewer("#imgViewer");
 	
 	document.querySelector("#categoryMenu").addEventListener("change",
 			function() {
-				viewer.requestImages("xml/images" + this.selectedIndex + ".xml");
+				Imageviewer.requestImages("xml/images" + this.selectedIndex + ".xml");
 				this.selectedIndex = 0;
 			}
 		);
@@ -34,7 +34,6 @@ class ImageViewer{
 		this.titleElem = document.querySelector(id + "h3"); // referens till h3 element
 		this.imgElem = document.querySelector(id + "img"); // -//- img element
 		this.captionElem = document.querySelector(id + "p"); // -//- p element
-
 		this.list = {
 			imgUrls: ["img/blank.png"],
 			imgCaptions: [""]
@@ -44,13 +43,13 @@ class ImageViewer{
 
 // Gör ett Ajax-anrop för att läsa in begärd fil
 requestImages(file) { // Parametern nr används i url:en för den fil som ska läsas in
-	let thisMuss = this;
+	let this2 = this;
 	let request = new XMLHttpRequest(); // Object för Ajax-anropet
 	request.open("GET",file,true);
 	request.send(null); // Skicka begäran till servern
 	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
 		if (request.readyState == 4) // readyState 4 --> kommunikationen är klar
-			if (request.status == 200)thisMuss.getImages(request.responseXML); // status 200 (OK) --> filen fanns
+			if (request.status == 200)this2.getImages(request.responseXML); // status 200 (OK) --> filen fanns
 			else document.getElementById("result").innerHTML = "Den begärda resursen fanns inte.";
 	};
 } // End requestImages
