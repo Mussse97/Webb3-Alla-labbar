@@ -5,7 +5,7 @@ let viewer = new ImageViewer("#imgViewer");
 	
 	document.querySelector("#categoryMenu").addEventListener("change",
 			function() {
-				ImageViewer.requestImages("xml/images" + this.selectedIndex + ".xml");
+				viewer.requestImages("xml/images" + this.selectedIndex + ".xml");
 				this.selectedIndex = 0;
 			}
 		);
