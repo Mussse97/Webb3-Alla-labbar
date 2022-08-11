@@ -1,102 +1,73 @@
-// Globala variabler
-var titleElem;		// Referens till element för bildspelets titel
-var imgElem;		// Referens till img-element för bildspelet
-var captionElem;	// Referens till element för bildtext
-var imgUrls;		// Array med url:er för valda bilder
-var imgCaptions;	// Array med bildtexter till valda bilder
-var imgIx;			// Index för aktuell bild
-var timer;			// Referens till timern för bildspelet
+class ImageViewer {
+    titleElem;        // Referens till element för bildspelets titel
+    imgElem;        // Referens till img-element för bildspelet
+    captionElem;    // Referens till element för bildtext
+    imgIx;            // Index för aktuell bild
+    timer;            // Referens till timern för bildspelet
+    imgList;        //Lista med bilder
+    constructor(id){
+        this.titleElem = document.querySelector("#"+id+" h3");
+        this.imgElem = document.querySelector("#"+id+" img");
+        this.captionElem = document.querySelector("#"+id+" p");
+        this.imgIx = 0;
+        this.timer = null;
+        this.imgList = []; 
+    }
 
+    requestImages(file) { // Parametern nr används i url:en för den fil som ska läsas in
+        var self = this; //Referera till denna klassen i en annan funktion
+        let request = new XMLHttpRequest(); // Object för Ajax-anropet
+        request.open("GET",file,true);
+        request.send(null); // Skicka begäran till servern
+        request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
+            if (request.readyState == 4) // readyState 4 --> kommunikationen är klar
+                if (request.status == 200) self.getImages(JSON.parse(request.responseText)); // status 200 (OK) --> filen fanns
+                else document.getElementById("result").innerHTML = "Den begärda resursen fanns inte.";
+        };
+    } // End requestImages
+
+    getImages(JSONtext) { // Parametern XMLcode är hela den inlästa XML-koden
+        let images = JSONtext.image; //Lista med alla bilder
+        this.titleElem.innerHTML = JSONtext.category;
+        this.imgList = [];
+        for(let i =0; i < images.length; i++){
+            this.imgList.push({imgUrl: images[i].url, imgCaption:images[i].caption})
+        }
+        this.imgIx = 0;
+        this.showImage();
+    } // End getImages
+// Visa bilden med index imgIx
+    showImage() {
+        this.imgElem.src = this.imgList[this.imgIx].imgUrl;
+        this.captionElem.innerHTML = (this.imgIx+1) + ". " + this.imgList[this.imgIx].imgCaption;
+    } // End showImage
+
+    // Visa föregående bild
+    prevImage() {
+        if (this.imgIx > 0) this.imgIx--;
+        else this.imgIx = this.imgList.length - 1; // Gå runt till sista bilden
+        this.showImage();
+    } // End prevImage
+
+    // Visa nästa bild
+    nextImage() {
+        if (this.imgIx < this.imgList.length - 1) this.imgIx++;
+        else this.imgIx = 0; // Gå runt till första bilden
+        this.showImage();
+    } // End nextImage
+
+};
 // Initiering av globala variabler och händelsehanterare
 function init() {
-	titleElem = document.querySelector("#imgViewer h3");
-	imgElem = document.querySelector("#imgViewer img");
-	captionElem = document.querySelector("#imgViewer p");
-	imgUrls = ["img/blank.png"]; // Initiera med den tomma bilden
-	imgCaptions = [""]; // Tom bildtext för den tomma bilden
-	imgIx = 0;
-	timer = null;
-	document.querySelector("#categoryMenu").addEventListener("change",
-			function() {
-				requestImages("images" + this.selectedIndex  );
-				this.selectedIndex = 0;
-			}
-		);
-	document.querySelector("#prevBtn").addEventListener("click",prevImage);
-	document.querySelector("#nextBtn").addEventListener("click",nextImage);
-	
-	// ----- Extramerit -----
-	/* document.querySelector("#autoBtn").addEventListener("click",
-			function(e) {
-				autoImage(e,3000);
-			}
-		);
-	*/
+    const imageViewer = new ImageViewer("imgViewer");
 
-	// ----- Guldstjärna -----
-	//		Här ska du lägga kod, om du gör guldstjärneuppgiften
-	
+    document.querySelector("#categoryMenu").addEventListener("change",
+            function() {
+                imageViewer.requestImages("json/images" + this.selectedIndex + ".json");
+                this.selectedIndex = 0;
+            }
+        );
+    document.querySelector("#prevBtn").addEventListener("click", function(){imageViewer.prevImage()});
+    document.querySelector("#nextBtn").addEventListener("click", function(){imageViewer.nextImage()});
 } // End init
 window.addEventListener("load",init);
-
-// ---------------------------------------------------------------
-// ----- Funktioner för bildspelet -----
-
-// Gör ett Ajax-anrop för att läsa in begärd fil
-function requestImages(selectedIndex) { // Parametern nr används i url:en för den fil som ska läsas in
-	let request = new XMLHttpRequest(); // Object för Ajax-anropet
-	request.open("GET", "json/" + selectedIndex+ ".json",  true);
-	request.send(null); // Skicka begäran till servern
-	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
-		if (request.readyState == 4) // readyState 4 --> kommunikationen är klar
-			if (request.status == 200) getImages(request.responseText); // status 200 (OK) --> filen fanns
-			else document.getElementById("result").innerHTML = "Den begärda resursen fanns inte.";
-	};
-} // End requestImages
-
-// Funktion för att tolka XML-koden och lägga in innehållet i variablerna för bilderna i bildspelet
-function getImages(JSONtext) { // Parametern XMLcode är hela den inlästa XML-koden
-	let image = JSON.parse(JSONtext).image;
-	let HTMLcode = "";
-	for (let i=0; i < image.length; i++){
-		HTMLcode+=  + image.url; 
-
-	}
-	imgElem.innerHTML = HTMLcode;
-} // End getImages
-
-// Visa bilden med index imgIx
-function showImage() {
-	imgElem.src = imgUrls[imgIx];
-	captionElem.innerHTML = (imgIx+1) + ". " + imgCaptions[imgIx];
-} // End showImage
-
-// Visa föregående bild
-function prevImage() {
-	if (imgIx > 0) imgIx--;
-	else imgIx = imgUrls.length - 1; // Gå runt till sista bilden
-	showImage();
-} // End prevImage
-
-// Visa nästa bild
-function nextImage() {
-	if (imgIx < imgUrls.length - 1) imgIx++;
-	else imgIx = 0; // Gå runt till första bilden
-	showImage();
-} // End nextImage
-
-// ----- Extramerit -----
-/* Ta bort kommentaren kring koden, för att testa funktionaliteten för extrameriten
-// Starta/stoppa automatisk bildvisning
-function autoImage(e,interval) {
-	if (timer == null) { // Start
-		timer = setInterval(nextImage,interval);
-		if (e) e.currentTarget.style.backgroundColor = "green";
-	}
-	else { // Stopp
-		clearInterval(timer);
-		timer = null;
-		if (e) e.currentTarget.style.backgroundColor = "white";
-	}
-} // End autoImage
-*/

@@ -14,7 +14,7 @@ class ImageViewer {
 		this.imgList = []; 
 	}
 
-	requestImages(file) { // Parametern nr används i url:en för den fil som ska läsas in
+	requestImages(file) { // Parametern nr används i url:en för filen som ska läsas in
 		var self = this; //Referera till denna klassen i en annan funktion
 		let request = new XMLHttpRequest(); // Object för Ajax-anropet
 		request.open("GET",file,true);
