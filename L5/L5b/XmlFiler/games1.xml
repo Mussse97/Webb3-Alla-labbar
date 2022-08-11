@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE games_objects SYSTEM "games.dtd">
+
+<games_objects>
+    <developer type="riot">
+        <games>
+            <game>league of legends</game>
+            <playerbase>I 2020 har det räknats upp till 100 miljoner konton som skapats och det är över 500.000 som spelar dagligen.</playerbase>
+            <url>https://www.leagueoflegends.com/en-gb/how-to-play/</url>
+        </games>
+        <description>League of Legends är ett lagbaserat multiplayer spel där skicklighet och lagarbete är viktigt för att vinna.</description>    
+    </developer>
+
+    <developer type="fromsoftware">
+        <games>
+            <game>Darksouls 3</game>
+            <playerbase>Darksould 3 har sålt över 100 miljoner kopior och är en av dom mest spelade singelplayer spel på steam.</playerbase>
+            <url>https://sv.wikipedia.org/wiki/Dark_Souls_III</url>
+        </games>
+        <description>Dark souls spelen är vad fromsoftware är kännda för. Det är spel som också är kända för att vara svårare än de traditionella singelplayer spelen som finns. Man kan inte välja svårighetsgrad vilket betyder att man måste anpassa sig till den svåra miljön.</description>    
+    </developer>
+</games_objects>

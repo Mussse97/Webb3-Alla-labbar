@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE games_objects SYSTEM "games.dtd">
+
+<games_objects>
+    <developer type="riot">
+        <games>
+            <game>Valorant</game>
+            <playerbase>Valorant har i genomsnitt 13,863,342 spelare i månaden</playerbase>
+            <url>https://sv.wikipedia.org/wiki/Valorant</url>
+        </games>
+        <description>Valorant ett first person shooter spel som liknar kännda produkter som csgo. Valorant är det nyaste spelet från Riot games.</description>    
+    </developer>
+
+    <developer type="fromsoftware">
+        <games>
+            <game>Sekiro:shadows die twice</game>
+            <playerbase>Sekiro solde över två miljoner kopior under 10 dagar när spelet först släpptes.</playerbase>
+            <url>https://en.wikipedia.org/wiki/Sekiro:_Shadows_Die_Twice</url>
+        </games>
+        <description>Sekiro liknar dark souls spelen på många sätt då fromsoftware gillar att skapa samma typ av spel. Allt från svårighetsgraden till berättelsen i spelen liknar varandra.</description>    
+    </developer>
+</games_objects>
