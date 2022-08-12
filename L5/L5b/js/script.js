@@ -3,15 +3,15 @@ var resElem;	// Referens till elementet för resultat
 // Initiering av globala variabler och händelsehanterare.
 function init() {
 	resElem = document.getElementById("result");
-	let btnElems = document.getElementById("countryButtons").getElementsByTagName("button");
+	let btnElems = document.getElementById("gameButtons").getElementsByTagName("button");
 	for (let i = 0; i < btnElems.length; i++) {
-		btnElems[i].addEventListener("click",selectCountry);
+		btnElems[i].addEventListener("click",selectGame);
 	}
 } // End init
 window.addEventListener("load",init);
 
-function selectCountry() {
-	let country = this.value; // Land i vald knapp
+function selectGame() {
+	
 	requestData("json/game.json");
 } // End selectCountry
 
@@ -25,22 +25,24 @@ function requestData(filename) { // filname är namnet (utan ändelse) på den f
 												// Obs! responseText, då det är JSON
 			else resElem.innerHTML = "Den begärda resursen finns inte.";
 	};
-} // End requestDepartmentinfo
+} // 
 
 // Tolka XML-koden och skriv ut på önskad form
 function getData(JSONtext) {
-	let games_objects = JSON.parse(JSONtext).games_objects; // Listan (array) accommodation
+	let games_objects = JSON.parse(JSONtext).games_objects.developer; // Listan (array) accommodation
 	console.log(games_objects)
 	let HTMLcode = ""; // Sträng med HTML-kod som skapas
 	for (let i = 0; i < games_objects.length; i++) {
-		// Referenser till olika egenskaper i aktuellt accomodation-objekt
-		let type = games_objects.type;
-		switch (type) { // Översätt från engelska till svenska
-			case "apartment": type = "riot"; break;
-			case "cottage": type = "fromsoftware"; break;
-		}
+
+		
+		
 		HTMLcode += 
-			"<p><b>Beskrivning:</b> " + games_objects[0].developer.type + "</p>";
+			"<p><b>Skapare:</b> " + games_objects[i].type + "</p>";
+		HTMLcode += "<p><b> Spel:</b> " + games_objects[i].games.game + "</p>";
+		HTMLcode += "<p><b>Beskrivning:</b> " + games_objects[i].description + "</p>";
+		HTMLcode +="<p><b>Antal spelare och solda kopior:</b> " + games_objects[i].games.playerbase + "</p>";
+		HTMLcode +="<p><b>Du känner dig sugen på att spela, här får du en länk till spelet eller wikin så du kan lära dig mer om spelet:</b></p><p>" + games_objects[i].games.url + "</p><br>";
+		
 	}
 	resElem.innerHTML = HTMLcode;
 } // End getData
