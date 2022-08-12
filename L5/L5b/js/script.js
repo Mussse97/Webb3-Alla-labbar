@@ -9,14 +9,13 @@ function init() {
 	}
 } // End init
 window.addEventListener("load",init);
-
+// När man klickat på knappen anropas requestdata då de gör förfrågan till jsopnfilen
 function selectGame() {
-	
 	requestData("json/game.json");
 } // End selectCountry
 
 function requestData(filename) { // filname är namnet (utan ändelse) på den fil som ska hämtas
-	let request = new XMLHttpRequest(); // Object för Ajax-anropet
+	let request = new XMLHttpRequest(); 
 	request.open("GET",  filename  ,true);
 	request.send(null); // Skicka begäran till servern
 	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
@@ -27,14 +26,11 @@ function requestData(filename) { // filname är namnet (utan ändelse) på den f
 	};
 } // 
 
-// Tolka XML-koden och skriv ut på önskad form
+// I denna funktion går jag igenom all infomation som finns i jsonfilerna och skriver ut de med HTMLcode
 function getData(JSONtext) {
-	let games_objects = JSON.parse(JSONtext).games_objects.developer; // Listan (array) accommodation
-	console.log(games_objects)
+	let games_objects = JSON.parse(JSONtext).games_objects.developer; // 
 	let HTMLcode = ""; // Sträng med HTML-kod som skapas
-	for (let i = 0; i < games_objects.length; i++) {
-
-		
+	for (let i = 0; i < games_objects.length; i++) {// går igenom de två valen i gameobjects
 		
 		HTMLcode += 
 			"<p><b>Skapare:</b> " + games_objects[i].type + "</p>";
