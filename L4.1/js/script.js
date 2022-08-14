@@ -1,3 +1,23 @@
+// Initiering av globala variabler och händelsehanterare
+function init() {
+  const imageViewer = new ImageViewer("imgViewer"); //Skapa ett objekt av imageveiwer
+
+  document
+    .querySelector("#categoryMenu")
+    .addEventListener("change", function () {
+      imageViewer.requestImages("xml/images" + this.selectedIndex + ".xml");
+      this.selectedIndex = 0;
+    });
+  document.querySelector("#prevBtn").addEventListener("click", function () {
+    imageViewer.prevImage();
+  });
+  document.querySelector("#nextBtn").addEventListener("click", function () {
+    imageViewer.nextImage();
+  });
+} // End init
+window.addEventListener("load", init);
+
+
 class ImageViewer {
   titleElem; // Referens till element för bildspelets titel
   imgElem; // Referens till img-element för bildspelet
@@ -5,6 +25,8 @@ class ImageViewer {
   imgIx; // Index för aktuell bild
   timer; // Referens till timern för bildspelet
   imgList;
+  
+  // id för html-element som innehållet bildspel
   constructor(id) {
     this.titleElem = document.querySelector("#" + id + " h3");
     this.imgElem = document.querySelector("#" + id + " img");
@@ -15,8 +37,7 @@ class ImageViewer {
   }
 
   requestImages(file) {
-    // Parametern nr används i url:en för filen som ska läsas in
-    var self = this; //Referera till denna klassen i en annan funktion
+    var self = this; //Referera till denna klassen i annan funktion
     let request = new XMLHttpRequest(); // Object för Ajax-anropet
     request.open("GET", file, true);
     request.send(null); // Skicka begäran till servern
@@ -91,21 +112,3 @@ class ImageViewer {
     this.showImage();
   } // End nextImage
 }
-// Initiering av globala variabler och händelsehanterare
-function init() {
-  const imageViewer = new ImageViewer("imgViewer"); //Skapa ett objekt av imageveiwer
-
-  document
-    .querySelector("#categoryMenu")
-    .addEventListener("change", function () {
-      imageViewer.requestImages("xml/images" + this.selectedIndex + ".xml");
-      this.selectedIndex = 0;
-    });
-  document.querySelector("#prevBtn").addEventListener("click", function () {
-    imageViewer.prevImage();
-  });
-  document.querySelector("#nextBtn").addEventListener("click", function () {
-    imageViewer.nextImage();
-  });
-} // End init
-window.addEventListener("load", init);

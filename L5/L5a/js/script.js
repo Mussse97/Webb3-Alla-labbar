@@ -1,3 +1,22 @@
+// Initiering av globala variabler och händelsehanterare
+function init() {
+  const imageViewer = new ImageViewer("imgViewer");
+
+  document
+    .querySelector("#categoryMenu")
+    .addEventListener("change", function () {
+      imageViewer.requestImages("json/images" + this.selectedIndex + ".json");
+      this.selectedIndex = 0;
+    });
+  document.querySelector("#prevBtn").addEventListener("click", function () {
+    imageViewer.prevImage();
+  });
+  document.querySelector("#nextBtn").addEventListener("click", function () {
+    imageViewer.nextImage();
+  });
+} // End init
+window.addEventListener("load", init);
+
 class ImageViewer {
   titleElem; // Referens till element för bildspelets titel
   imgElem; // Referens till img-element för bildspelet
@@ -15,7 +34,6 @@ class ImageViewer {
   }
 
   requestImages(file) {
-    // Parametern nr används i url:en för den fil som ska läsas in
     var self = this; //Referera till denna klassen i en annan funktion
     let request = new XMLHttpRequest(); // Object för Ajax-anropet
     request.open("GET", file, true);
@@ -35,7 +53,7 @@ class ImageViewer {
   } // End requestImages
 
   getImages(JSONtext) {
-    // Parametern XMLcode är hela den inlästa XML-koden
+    // Nu är det Jsontext istället för xmlfile
     let images = JSONtext.image; //Lista med alla bilder
     this.titleElem.innerHTML = JSONtext.category;
     this.imgList = [];
@@ -69,21 +87,3 @@ class ImageViewer {
     this.showImage();
   } // End nextImage
 }
-// Initiering av globala variabler och händelsehanterare
-function init() {
-  const imageViewer = new ImageViewer("imgViewer");
-
-  document
-    .querySelector("#categoryMenu")
-    .addEventListener("change", function () {
-      imageViewer.requestImages("json/images" + this.selectedIndex + ".json");
-      this.selectedIndex = 0;
-    });
-  document.querySelector("#prevBtn").addEventListener("click", function () {
-    imageViewer.prevImage();
-  });
-  document.querySelector("#nextBtn").addEventListener("click", function () {
-    imageViewer.nextImage();
-  });
-} // End init
-window.addEventListener("load", init);
